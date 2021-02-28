@@ -29,7 +29,7 @@ const BOT_PREFIX = '+';
 // @ts-expect-error: If token is not defined, bot will not start.
 const BOT_TOKEN = process.env.DISCORD_TOKEN;
 // Sets up bots embed color.
-const BOT_EMBED_COLOR = "#ff0000";
+const BOT_EMBED_COLOR = "#FFB6C1";
 const BOT_ADMIN_EMBED_COLOR = "#00FF00";
 // Function for initializing the bot.
 const initialize_1 = __importDefault(require("./core/initialize"));
@@ -62,6 +62,44 @@ client.once('ready', () => {
     // @ts-expect-error: String is defined.
     client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'idle' });
 });
+//
+// Automatic avatar sending into special channels
+//
+client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
+    // Sends avatars into channels every 2sec
+    setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
+        // Creates an object with specified guild.
+        let guild = client.guilds.resolve('795960010659856434');
+        // Picks random user on the guild.
+        let randomUser = guild === null || guild === void 0 ? void 0 : guild.members.cache.random();
+        // Gets his profile picture
+        let randomPicture = randomUser.user.avatarURL({ dynamic: true });
+        // If null return
+        if (randomPicture === null) {
+            return;
+        }
+        // Is is the profile picture animated do this
+        if (randomPicture.includes('.gif')) {
+            // Embed for picture.
+            const embedPicture = new discord_js_1.default.MessageEmbed()
+                .setColor(BOT_EMBED_COLOR)
+                .setImage(`${randomPicture}`)
+                .setTimestamp();
+            // Send to gif channel
+            return guild === null || guild === void 0 ? void 0 : guild.channels.cache.get('815181575288782869').send(embedPicture);
+        }
+        else {
+            // Is is not null nor gif print it into static.
+            // Embed for picture.
+            const embedPicture = new discord_js_1.default.MessageEmbed()
+                .setColor(BOT_EMBED_COLOR)
+                .setImage(`${randomPicture}`)
+                .setTimestamp();
+            // Send to static channel
+            return guild === null || guild === void 0 ? void 0 : guild.channels.cache.get('815181628858171433').send(embedPicture);
+        }
+    }), 2000);
+}));
 //
 // Commands that can be used by everyone.
 //
@@ -98,14 +136,14 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
             // Exceptions while formatting roleMap.
             // @ts-expect-error: roleMap is defined.
             if (roleMap.length > 1024)
-                roleMap = "To many roles to display";
+                roleMap = "Too many roles to display";
             if (!roleMap)
                 roleMap = "No roles";
             const embedUserInfo = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`User Info - ${member === null || member === void 0 ? void 0 : member.user.username}`)
                 .setAuthor((_c = client.user) === null || _c === void 0 ? void 0 : _c.username, botAvatar)
-                .setThumbnail(`${member.user.avatarURL()}`)
+                .setThumbnail(`${member.user.avatarURL({ dynamic: true })}`)
                 .addFields({ name: 'ID:', value: member === null || member === void 0 ? void 0 : member.id }, { name: 'Name and discriminator:', value: member === null || member === void 0 ? void 0 : member.user.tag }, { name: 'Created at:', value: moment_1.default(member === null || member === void 0 ? void 0 : member.user.createdTimestamp).format('MMMM Do YYYY') }, { name: 'Joined at:', value: moment_1.default(member === null || member === void 0 ? void 0 : member.joinedTimestamp).format('MMMM Do YYYY') }, { name: 'Top role:', value: member === null || member === void 0 ? void 0 : member.roles.highest }, { name: 'Is bot?:', value: (member === null || member === void 0 ? void 0 : member.user.bot) ? 'Yes' : 'No' }, { name: 'Roles:', value: roleMap })
                 .setTimestamp()
                 .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
@@ -122,7 +160,7 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
                 .join(", ");
             // Exceptions while formatting serverRoleMap.
             if (serverRoleMap.length > 1024)
-                serverRoleMap = "To many roles to display";
+                serverRoleMap = "Too many roles to display";
             if (!serverRoleMap)
                 serverRoleMap = "No roles";
             const embedServerInfo = new discord_js_1.default.MessageEmbed()

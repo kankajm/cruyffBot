@@ -4,7 +4,7 @@
 //
 
 // Imports discord.js
-import Discord from 'discord.js';
+import Discord, {Collection, Guild} from 'discord.js';
 
 // Imports moment.js
 import moment from 'moment';
@@ -63,6 +63,46 @@ client.once('ready', () => {
 });
 
 //
+// Automatic avatar sending into special channels
+//
+client.on('ready', async () => {
+    // Sends avatars into channels every 2sec
+    setInterval(async () => {
+        // Creates an object with specified guild.
+        let guild = client.guilds.resolve('795960010659856434');
+        // Picks random user on the guild.
+        let randomUser = guild?.members.cache.random();
+        // Gets his profile picture
+        let randomPicture = randomUser.user.avatarURL({ dynamic: true });
+
+        // If null return
+        if (randomPicture === null) {
+            return;
+        }
+        // Is is the profile picture animated do this
+        if (randomPicture.includes('.gif')) {
+            // Embed for picture.
+            const embedPicture = new Discord.MessageEmbed()
+                .setColor(BOT_EMBED_COLOR)
+                .setImage(`${randomPicture}`)
+                .setTimestamp();
+            // Send to gif channel
+            return guild?.channels.cache.get('815181575288782869').send(embedPicture);
+        } else {
+            // Is is not null nor gif print it into static.
+            // Embed for picture.
+            const embedPicture = new Discord.MessageEmbed()
+                .setColor(BOT_EMBED_COLOR)
+                .setImage(`${randomPicture}`)
+                .setTimestamp();
+            // Send to static channel
+            return guild?.channels.cache.get('815181628858171433').send(embedPicture);
+        }
+    }, 2000);
+});
+
+
+//
 // Commands that can be used by everyone.
 //
 client.on('message', async message => {
@@ -116,7 +156,7 @@ client.on('message', async message => {
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`User Info - ${member?.user.username}`)
                 .setAuthor(client.user?.username, botAvatar)
-                .setThumbnail(`${member.user.avatarURL()}`)
+                .setThumbnail(`${member.user.avatarURL({ dynamic: true })}`)
                 .addFields(
                     { name: 'ID:', value: member?.id },
                     { name: 'Name and discriminator:', value: member?.user.tag },
