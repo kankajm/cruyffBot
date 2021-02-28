@@ -143,7 +143,7 @@ client.on('message', async message => {
                 .join(", ");
 
             // Exceptions while formatting serverRoleMap.
-            if (serverRoleMap.length > 1024) serverRoleMap = "To many roles to display";
+            if (serverRoleMap.length > 1024) serverRoleMap = "Too many roles to display";
             if (!serverRoleMap) serverRoleMap = "No roles";
 
             const embedServerInfo = new Discord.MessageEmbed()
