@@ -21,7 +21,7 @@ const BOT_PREFIX: string = '+';
 const BOT_TOKEN: string = process.env.DISCORD_TOKEN;
 
 // Sets up bots embed color.
-const BOT_EMBED_COLOR: string = "#ff0000";
+const BOT_EMBED_COLOR: string = "#FFB6C1";
 const BOT_ADMIN_EMBED_COLOR: string = "#00FF00";
 
 // Function for initializing the bot.
@@ -109,7 +109,7 @@ client.on('message', async message => {
 
             // Exceptions while formatting roleMap.
             // @ts-expect-error: roleMap is defined.
-            if (roleMap.length > 1024) roleMap = "To many roles to display";
+            if (roleMap.length > 1024) roleMap = "Too many roles to display";
             if (!roleMap) roleMap = "No roles";
 
             const embedUserInfo = new Discord.MessageEmbed()
