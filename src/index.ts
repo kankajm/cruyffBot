@@ -109,6 +109,9 @@ client.on('message', async message => {
     // Ignore messages that aren't from a guild
     if (!message.guild) return;
 
+    // If message don't starts with BOT_PREFIX return
+    if (!message.content.includes('+')) return;
+
     // Bots avatar
     const botAvatar: any = client.user?.avatarURL();
 
@@ -229,6 +232,9 @@ client.on('message', async message => {
 client.on('message', async message => {
     // Ignore messages that aren't from a guild
     if (!message.guild) return;
+
+    // If message don't starts with BOT_PREFIX return
+    if (!message.content.includes('+')) return;
 
     // Assigns message author id to more readable variable.
     const messageAuthor: string = message.author.id;

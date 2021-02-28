@@ -108,6 +108,9 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
     // Ignore messages that aren't from a guild
     if (!message.guild)
         return;
+    // If message don't starts with BOT_PREFIX return
+    if (!message.content.includes('+'))
+        return;
     // Bots avatar
     const botAvatar = (_a = client.user) === null || _a === void 0 ? void 0 : _a.avatarURL();
     // Assigns message author id to more readable variable.
@@ -194,6 +197,9 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
 client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* () {
     // Ignore messages that aren't from a guild
     if (!message.guild)
+        return;
+    // If message don't starts with BOT_PREFIX return
+    if (!message.content.includes('+'))
         return;
     // Assigns message author id to more readable variable.
     const messageAuthor = message.author.id;
