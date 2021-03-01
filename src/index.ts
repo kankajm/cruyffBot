@@ -101,7 +101,6 @@ client.on('ready', async () => {
     }, 2000);
 });
 
-
 //
 // Commands that can be used by everyone.
 //
@@ -145,13 +144,12 @@ client.on('message', async message => {
             }
 
             // Creates a formatted string with all roles user have.
-            let roleMap = message.member?.roles.cache
+            let roleMap = member?.roles.cache
                 .sort((a, b) => b.position - a.position)
                 .map(r => r)
                 .join(", ");
 
             // Exceptions while formatting roleMap.
-            // @ts-expect-error: roleMap is defined.
             if (roleMap.length > 1024) roleMap = "Too many roles to display";
             if (!roleMap) roleMap = "No roles";
 

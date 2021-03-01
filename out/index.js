@@ -65,15 +65,17 @@ client.once('ready', () => {
 //
 // Automatic avatar sending into special channels
 //
-client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
+/*
+client.on('ready', async () => {
     // Sends avatars into channels every 2sec
-    setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
+    setInterval(async () => {
         // Creates an object with specified guild.
         let guild = client.guilds.resolve('795960010659856434');
         // Picks random user on the guild.
-        let randomUser = guild === null || guild === void 0 ? void 0 : guild.members.cache.random();
+        let randomUser = guild?.members.cache.random();
         // Gets his profile picture
         let randomPicture = randomUser.user.avatarURL({ dynamic: true });
+
         // If null return
         if (randomPicture === null) {
             return;
@@ -81,30 +83,30 @@ client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
         // Is is the profile picture animated do this
         if (randomPicture.includes('.gif')) {
             // Embed for picture.
-            const embedPicture = new discord_js_1.default.MessageEmbed()
+            const embedPicture = new Discord.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setImage(`${randomPicture}`)
                 .setTimestamp();
             // Send to gif channel
-            return guild === null || guild === void 0 ? void 0 : guild.channels.cache.get('815181575288782869').send(embedPicture);
-        }
-        else {
+            return guild?.channels.cache.get('815181575288782869').send(embedPicture);
+        } else {
             // Is is not null nor gif print it into static.
             // Embed for picture.
-            const embedPicture = new discord_js_1.default.MessageEmbed()
+            const embedPicture = new Discord.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setImage(`${randomPicture}`)
                 .setTimestamp();
             // Send to static channel
-            return guild === null || guild === void 0 ? void 0 : guild.channels.cache.get('815181628858171433').send(embedPicture);
+            return guild?.channels.cache.get('815181628858171433').send(embedPicture);
         }
-    }), 2000);
-}));
+    }, 2000);
+});
+*/
 //
 // Commands that can be used by everyone.
 //
 client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b, _c, _d, _e;
     // Ignore messages that aren't from a guild
     if (!message.guild)
         return;
@@ -135,9 +137,8 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
                 return message.channel.send(embedError);
             }
             // Creates a formatted string with all roles user have.
-            let roleMap = (_b = message.member) === null || _b === void 0 ? void 0 : _b.roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");
+            let roleMap = member === null || member === void 0 ? void 0 : member.roles.cache.sort((a, b) => b.position - a.position).map(r => r).join(", ");
             // Exceptions while formatting roleMap.
-            // @ts-expect-error: roleMap is defined.
             if (roleMap.length > 1024)
                 roleMap = "Too many roles to display";
             if (!roleMap)
@@ -145,7 +146,7 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
             const embedUserInfo = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`User Info - ${member === null || member === void 0 ? void 0 : member.user.username}`)
-                .setAuthor((_c = client.user) === null || _c === void 0 ? void 0 : _c.username, botAvatar)
+                .setAuthor((_b = client.user) === null || _b === void 0 ? void 0 : _b.username, botAvatar)
                 .setThumbnail(`${member.user.avatarURL({ dynamic: true })}`)
                 .addFields({ name: 'ID:', value: member === null || member === void 0 ? void 0 : member.id }, { name: 'Name and discriminator:', value: member === null || member === void 0 ? void 0 : member.user.tag }, { name: 'Created at:', value: moment_1.default(member === null || member === void 0 ? void 0 : member.user.createdTimestamp).format('MMMM Do YYYY') }, { name: 'Joined at:', value: moment_1.default(member === null || member === void 0 ? void 0 : member.joinedTimestamp).format('MMMM Do YYYY') }, { name: 'Top role:', value: member === null || member === void 0 ? void 0 : member.roles.highest }, { name: 'Is bot?:', value: (member === null || member === void 0 ? void 0 : member.user.bot) ? 'Yes' : 'No' }, { name: 'Roles:', value: roleMap })
                 .setTimestamp()
@@ -169,7 +170,7 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
             const embedServerInfo = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`Server info - ${message.guild.name}`)
-                .setAuthor((_d = client.user) === null || _d === void 0 ? void 0 : _d.username, botAvatar)
+                .setAuthor((_c = client.user) === null || _c === void 0 ? void 0 : _c.username, botAvatar)
                 .setThumbnail(`${message.guild.icon ? message.guild.iconURL() : ''}`)
                 .addFields({ name: 'Member count:', inline: true, value: message.guild.memberCount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") }, { name: 'Role list:', value: serverRoleMap })
                 .setTimestamp()
@@ -182,8 +183,8 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
             const authorAvatarURL = message.author.avatarURL();
             const embedHelp = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
-                .setTitle(`Commands for the ${(_e = client.user) === null || _e === void 0 ? void 0 : _e.username}:`)
-                .setAuthor((_f = client.user) === null || _f === void 0 ? void 0 : _f.username, botAvatar)
+                .setTitle(`Commands for the ${(_d = client.user) === null || _d === void 0 ? void 0 : _d.username}:`)
+                .setAuthor((_e = client.user) === null || _e === void 0 ? void 0 : _e.username, botAvatar)
                 .addFields({ name: 'Info about the selected user:', value: '```+userinfo @username```' }, { name: 'Info and statistics about the server:', value: '```+serverinfo```' }, { name: 'Ban user from the server (Admin only):', value: '```+ban @username```' }, { name: 'Kick user from the server (Admin only):', value: '```+kick @username```' }, { name: 'Unban user from the server (Admin only):', value: '```+unban @username```' })
                 .setTimestamp()
                 .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
