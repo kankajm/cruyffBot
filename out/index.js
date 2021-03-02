@@ -60,22 +60,20 @@ client.once('ready', () => {
     initialize_1.default(client.user.username, client.user.id);
     // Spins up the Rich Presence
     // @ts-expect-error: String is defined.
-    client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'idle' });
+    client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'dnd' });
 });
 //
 // Automatic avatar sending into special channels
 //
-/*
-client.on('ready', async () => {
+client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
     // Sends avatars into channels every 2sec
-    setInterval(async () => {
+    setInterval(() => __awaiter(void 0, void 0, void 0, function* () {
         // Creates an object with specified guild.
         let guild = client.guilds.resolve('795960010659856434');
         // Picks random user on the guild.
-        let randomUser = guild?.members.cache.random();
+        let randomUser = guild === null || guild === void 0 ? void 0 : guild.members.cache.random();
         // Gets his profile picture
         let randomPicture = randomUser.user.avatarURL({ dynamic: true });
-
         // If null return
         if (randomPicture === null) {
             return;
@@ -83,25 +81,25 @@ client.on('ready', async () => {
         // Is is the profile picture animated do this
         if (randomPicture.includes('.gif')) {
             // Embed for picture.
-            const embedPicture = new Discord.MessageEmbed()
+            const embedPicture = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setImage(`${randomPicture}`)
                 .setTimestamp();
             // Send to gif channel
-            return guild?.channels.cache.get('815181575288782869').send(embedPicture);
-        } else {
+            return guild === null || guild === void 0 ? void 0 : guild.channels.cache.get('815181575288782869').send(embedPicture);
+        }
+        else {
             // Is is not null nor gif print it into static.
             // Embed for picture.
-            const embedPicture = new Discord.MessageEmbed()
+            const embedPicture = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setImage(`${randomPicture}`)
                 .setTimestamp();
             // Send to static channel
-            return guild?.channels.cache.get('815181628858171433').send(embedPicture);
+            return guild === null || guild === void 0 ? void 0 : guild.channels.cache.get('815181628858171433').send(embedPicture);
         }
-    }, 2000);
-});
-*/
+    }), 2000);
+}));
 //
 // Commands that can be used by everyone.
 //

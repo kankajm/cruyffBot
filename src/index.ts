@@ -59,7 +59,7 @@ client.once('ready', () => {
 
     // Spins up the Rich Presence
     // @ts-expect-error: String is defined.
-    client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'idle' });
+    client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'dnd' });
 });
 
 //
