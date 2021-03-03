@@ -58,10 +58,14 @@ client.once('ready', () => {
     // core/initialize.ts
     // @ts-expect-error: These objects are not null and will not be.
     initialize_1.default(client.user.username, client.user.id);
-    // Spins up the Rich Presence
-    // @ts-expect-error: String is defined.
-    client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'dnd' });
 });
+// Print Rich Presence (refreshes every 10sec).
+client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
+    setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
+        // @ts-expect-error: String is defined.
+        client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'dnd' });
+    }), 10000);
+}));
 //
 // Automatic avatar sending into special channels
 //
@@ -120,8 +124,6 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
     switch (args[0]) {
         // Public command userinfo: BOT_PREFIX + userinfo <@taguser>
         case 'userinfo': {
-            // Declare bot avatar URL
-            const authorAvatarURL = message.author.avatarURL();
             // Gets user ID by @username_and_discriminator
             const user = message.mentions.users.first();
             // Creates an user object to work with.
@@ -141,14 +143,20 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
                 roleMap = "Too many roles to display";
             if (!roleMap)
                 roleMap = "No roles";
+            // Gets users avatar
+            let userAvatar = member.user.avatarURL({ dynamic: true });
+            // User has default avatar place link to the default one.
+            if (userAvatar === null) {
+                userAvatar = "https://i.imgur.com/uPZMCMT.png";
+            }
             const embedUserInfo = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`User Info - ${member === null || member === void 0 ? void 0 : member.user.username}`)
                 .setAuthor((_b = client.user) === null || _b === void 0 ? void 0 : _b.username, botAvatar)
-                .setThumbnail(`${member.user.avatarURL({ dynamic: true })}`)
+                .setThumbnail(`${userAvatar}`)
                 .addFields({ name: 'ID:', value: member === null || member === void 0 ? void 0 : member.id }, { name: 'Name and discriminator:', value: member === null || member === void 0 ? void 0 : member.user.tag }, { name: 'Created at:', value: moment_1.default(member === null || member === void 0 ? void 0 : member.user.createdTimestamp).format('MMMM Do YYYY') }, { name: 'Joined at:', value: moment_1.default(member === null || member === void 0 ? void 0 : member.joinedTimestamp).format('MMMM Do YYYY') }, { name: 'Top role:', value: member === null || member === void 0 ? void 0 : member.roles.highest }, { name: 'Is bot?:', value: (member === null || member === void 0 ? void 0 : member.user.bot) ? 'Yes' : 'No' }, { name: 'Roles:', value: roleMap })
                 .setTimestamp()
-                .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
+                .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, userAvatar);
             return message.channel.send(embedUserInfo);
         }
         // Public command serverinfo: BOT_PREFIX + serverinfo

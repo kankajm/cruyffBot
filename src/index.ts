@@ -36,7 +36,6 @@ const botStaffs: string[] = [
     '681069547331256320',
     '655517783513235489',
     '788856333826785311',
-
     '161071543584030720'
 ];
 
@@ -56,10 +55,14 @@ client.once('ready', () => {
     // core/initialize.ts
     // @ts-expect-error: These objects are not null and will not be.
     initializeBot(client.user.username, client.user.id);
+});
 
-    // Spins up the Rich Presence
-    // @ts-expect-error: String is defined.
-    client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'dnd' });
+// Print Rich Presence (refreshes every 10sec).
+client.on('ready', async () => {
+    setTimeout(async () => {
+        // @ts-expect-error: String is defined.
+        client.user.setPresence({ activity: { name: "+help | discord.gg/gifzone" }, status: 'dnd' });
+    }, 10000)
 });
 
 //
@@ -123,9 +126,6 @@ client.on('message', async message => {
     switch (args[0]) {
         // Public command userinfo: BOT_PREFIX + userinfo <@taguser>
         case 'userinfo': {
-            // Declare bot avatar URL
-            const authorAvatarURL = message.author.avatarURL();
-
             // Gets user ID by @username_and_discriminator
             const user = message.mentions.users.first();
 
@@ -153,11 +153,19 @@ client.on('message', async message => {
             if (roleMap.length > 1024) roleMap = "Too many roles to display";
             if (!roleMap) roleMap = "No roles";
 
+            // Gets users avatar
+            let userAvatar = member.user.avatarURL({ dynamic: true });
+
+            // User has default avatar place link to the default one.
+            if (userAvatar === null) {
+                userAvatar = "https://i.imgur.com/uPZMCMT.png";
+            }
+
             const embedUserInfo = new Discord.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`User Info - ${member?.user.username}`)
                 .setAuthor(client.user?.username, botAvatar)
-                .setThumbnail(`${member.user.avatarURL({ dynamic: true })}`)
+                .setThumbnail(`${userAvatar}`)
                 .addFields(
                     { name: 'ID:', value: member?.id },
                     { name: 'Name and discriminator:', value: member?.user.tag },
@@ -168,7 +176,7 @@ client.on('message', async message => {
                     { name: 'Roles:', value: roleMap }
                 )
                 .setTimestamp()
-                .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
+                .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, userAvatar);
             return message.channel.send(embedUserInfo);
         }
 
