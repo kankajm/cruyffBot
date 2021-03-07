@@ -208,6 +208,31 @@ client.on('message', async message => {
                 .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
             return message.channel.send(embedServerInfo);
         }
+            
+        // Public command av: BOT_PREFIX + av <@selected user>
+        case 'av': {
+            // If user is not mentioned send embed with authours avatar.
+            if (message.mentions.users.first() === undefined) {
+                let authorAvatar = message.author.avatarURL({ dynamic: true });
+
+                const embedPicture = new Discord.MessageEmbed()
+                    .setColor(BOT_EMBED_COLOR)
+                    .setImage(`${authorAvatar}`)
+                    .setTimestamp();
+
+                return message.channel.send(embedPicture);
+            } else {
+                // If user is selected send embed with selected user avatar.
+                let selectedUserAvatar = message.mentions.users.first()?.avatarURL({ dynamic: true });
+
+                const embedPicture = new Discord.MessageEmbed()
+                .setColor(BOT_EMBED_COLOR)
+                .setImage(`${selectedUserAvatar}`)
+                .setTimestamp();
+
+                return message.channel.send(embedPicture);
+            }
+        }
 
         // Public command help: BOT_PREFIX + help
         case 'help': {

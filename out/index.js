@@ -108,7 +108,7 @@ client.on('ready', () => __awaiter(void 0, void 0, void 0, function* () {
 // Commands that can be used by everyone.
 //
 client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     // Ignore messages that aren't from a guild
     if (!message.guild)
         return;
@@ -183,14 +183,35 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
                 .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
             return message.channel.send(embedServerInfo);
         }
+        // Public command av: BOT_PREFIX + av <@selected user>
+        case 'av': {
+            // If user is not mentioned send embed with authours avatar.
+            if (message.mentions.users.first() === undefined) {
+                let authorAvatar = message.author.avatarURL({ dynamic: true });
+                const embedPicture = new discord_js_1.default.MessageEmbed()
+                    .setColor(BOT_EMBED_COLOR)
+                    .setImage(`${authorAvatar}`)
+                    .setTimestamp();
+                return message.channel.send(embedPicture);
+            }
+            else {
+                // If user is selected send embed with selected user avatar.
+                let selectedUserAvatar = (_d = message.mentions.users.first()) === null || _d === void 0 ? void 0 : _d.avatarURL({ dynamic: true });
+                const embedPicture = new discord_js_1.default.MessageEmbed()
+                    .setColor(BOT_EMBED_COLOR)
+                    .setImage(`${selectedUserAvatar}`)
+                    .setTimestamp();
+                return message.channel.send(embedPicture);
+            }
+        }
         // Public command help: BOT_PREFIX + help
         case 'help': {
             // Declare bot avatar URL
             const authorAvatarURL = message.author.avatarURL();
             const embedHelp = new discord_js_1.default.MessageEmbed()
                 .setColor(BOT_EMBED_COLOR)
-                .setTitle(`Commands for the ${(_d = client.user) === null || _d === void 0 ? void 0 : _d.username}:`)
-                .setAuthor((_e = client.user) === null || _e === void 0 ? void 0 : _e.username, botAvatar)
+                .setTitle(`Commands for the ${(_e = client.user) === null || _e === void 0 ? void 0 : _e.username}:`)
+                .setAuthor((_f = client.user) === null || _f === void 0 ? void 0 : _f.username, botAvatar)
                 .addFields({ name: 'Info about the selected user:', value: '```+userinfo @username```' }, { name: 'Info and statistics about the server:', value: '```+serverinfo```' }, { name: 'Ban user from the server (Admin only):', value: '```+ban @username```' }, { name: 'Kick user from the server (Admin only):', value: '```+kick @username```' }, { name: 'Unban user from the server (Admin only):', value: '```+unban @username```' })
                 .setTimestamp()
                 .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
