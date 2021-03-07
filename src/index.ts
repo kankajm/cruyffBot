@@ -246,6 +246,7 @@ client.on('message', async message => {
                 .addFields(
                     { name: 'Info about the selected user:', value: '```+userinfo @username```' },
                     { name: 'Info and statistics about the server:', value: '```+serverinfo```' },
+                    { name: 'Get users avatar:', value: '```+av @username```' },
                     { name: 'Ban user from the server (Admin only):', value: '```+ban @username```' },
                     { name: 'Kick user from the server (Admin only):', value: '```+kick @username```' },
                     { name: 'Unban user from the server (Admin only):', value: '```+unban @username```' }

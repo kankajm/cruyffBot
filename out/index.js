@@ -212,7 +212,7 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
                 .setColor(BOT_EMBED_COLOR)
                 .setTitle(`Commands for the ${(_e = client.user) === null || _e === void 0 ? void 0 : _e.username}:`)
                 .setAuthor((_f = client.user) === null || _f === void 0 ? void 0 : _f.username, botAvatar)
-                .addFields({ name: 'Info about the selected user:', value: '```+userinfo @username```' }, { name: 'Info and statistics about the server:', value: '```+serverinfo```' }, { name: 'Ban user from the server (Admin only):', value: '```+ban @username```' }, { name: 'Kick user from the server (Admin only):', value: '```+kick @username```' }, { name: 'Unban user from the server (Admin only):', value: '```+unban @username```' })
+                .addFields({ name: 'Info about the selected user:', value: '```+userinfo @username```' }, { name: 'Info and statistics about the server:', value: '```+serverinfo```' }, { name: 'Get users avatar:', value: '```+av @username```' }, { name: 'Ban user from the server (Admin only):', value: '```+ban @username```' }, { name: 'Kick user from the server (Admin only):', value: '```+kick @username```' }, { name: 'Unban user from the server (Admin only):', value: '```+unban @username```' })
                 .setTimestamp()
                 .setFooter(`Requested by ${message.author.username}#${message.author.discriminator}`, authorAvatarURL);
             return message.channel.send(embedHelp);
